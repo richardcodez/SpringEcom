@@ -5,6 +5,7 @@ import com.richardcodez.SpringEcom.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -79,6 +80,15 @@ public class ProductController {
             return new ResponseEntity<>("Deleted", HttpStatus.OK);
         } else
             return new ResponseEntity<>("Product not there", HttpStatus.NOT_FOUND);
+    }
+
+    // either annotate relevant method with @Transactional or change application.properties
+//    @Transactional
+    @GetMapping("products/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword){
+        List<Product> products = productService.searchProducts(keyword);
+        System.out.println("Searching with " + keyword);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
 }

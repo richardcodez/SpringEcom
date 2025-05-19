@@ -36,6 +36,10 @@ public class ProductService {
         productRepo.deleteById(id);
     }
 
+    public List<Product> searchProducts(String keyword) {
+        return productRepo.searchProducts(keyword);
+    }
+
 //    public Product updateProduct(Product product, MultipartFile imageFile) throws IOException {
 //        product.setImageName(imageFile.getOriginalFilename());
 //        product.setImageType(imageFile.getContentType());
