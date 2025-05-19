@@ -51,7 +51,7 @@ public class ProductController {
     public ResponseEntity<?> addProduct(@RequestPart Product product, @RequestPart MultipartFile imageFile){
         Product savedProduct = null;
         try {
-            savedProduct = productService.addProduct(product, imageFile);
+            savedProduct = productService.addorUpdateProduct(product, imageFile);
             return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,11 +63,22 @@ public class ProductController {
     {
         Product udpdatedProduct = null;
         try {
-            udpdatedProduct = productService.updateProduct(product, imageFile);
+            udpdatedProduct = productService.addorUpdateProduct(product, imageFile);
             return new ResponseEntity<>("Updated", HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("product/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable int id){
+        Product product = productService.getProductById(id);
+
+        if(product != null) {
+            productService.deleteProduct(id);
+            return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        } else
+            return new ResponseEntity<>("Product not there", HttpStatus.NOT_FOUND);
     }
 
 }
